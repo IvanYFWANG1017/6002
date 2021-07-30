@@ -331,11 +331,11 @@ class LaRL(Policy):
         self.config = config
         if config.use_gpu:
             self.model.load_state_dict(torch.load(
-                os.path.join(temp_path, 'larl_model/best-model')))
+                'input/pretrain1/96-model'))
             self.model.cuda()
         else:
             self.model.load_state_dict(torch.load(
-                '/root/NeuralDialog-LaRL/larl_model/best-model'), map_location=lambda storage, loc: storage)
+                'input/pretrain1/96-model'), map_location=lambda storage, loc: storage)
         self.model.eval()
         self.dic = pickle.load(
             open(os.path.join(temp_path, 'larl_model/svdic.pkl'), 'rb'))
