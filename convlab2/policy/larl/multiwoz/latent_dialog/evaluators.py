@@ -195,7 +195,7 @@ class MultiWozEvaluator(BaseEvaluator):
     def __init__(self, data_name):
         self.data_name = data_name
         self.slot_dict = delex.prepareSlotValuesIndependent()
-        self.delex_dialogues = json.load(open(os.path.join(self.CUR_DIR, '../input/delex1/delex.json')))
+        self.delex_dialogues = json.load(open('../input/delex1/delex.json'))
         self.db = MultiWozDB()
         self.labels = list()
         self.hyps = list()
