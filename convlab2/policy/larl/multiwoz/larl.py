@@ -330,8 +330,8 @@ class LaRL(Policy):
         self.model = SysPerfectBD2Gauss(self.corpus, config)
         self.config = config
         if config.use_gpu:
-            self.model.load_state_dict(torch.load(
-                '../input/model1/rl_model'))
+            self.model.load_state_dict(
+                '../input/model1/rl_model')
             self.model.cuda()
         else:
             self.model.load_state_dict(torch.load(
