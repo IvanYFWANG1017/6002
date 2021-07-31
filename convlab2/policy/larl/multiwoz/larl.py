@@ -752,9 +752,9 @@ class LaRL(Policy):
         sample_z = self.model.gauss_connector(q_mu, q_logvar)
         p_mu, p_logvar = self.model.zero, self.model.zero
         
-        sample_z = th.normal(p_mu, th.sqrt(th.exp(p_logvar))).detach()
+        sample_z = torch.normal(p_mu, th.sqrt(th.exp(p_logvar))).detach()
         logprob_sample_z = self.gaussian_logprob(p_mu, self.zero, sample_z)
-        joint_logpz = th.sum(logprob_sample_z, dim=1)
+        joint_logpz = torch.sum(logprob_sample_z, dim=1)
 
 
         # pack attention context
