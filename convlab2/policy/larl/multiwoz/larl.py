@@ -751,37 +751,23 @@ class LaRL(Policy):
         sample_y = self.model.gauss_connector(logits_qy, hard=mode == GEN)
         log_py = self.model.log_uniform_y
 
+
         # pack attention context
-        if self.model.config.dec_use_attn:
-            z_embeddings = torch.t(self.model.z_embedding.weight).split(
-                self.model.k_size, dim=0)
-            attn_context = []
-            temp_sample_y = sample_y.view(-1, self.model.config.y_size,
-                                          self.model.config.k_size)
-            for z_id in range(self.model.y_size):
-                attn_context.append(
-                    torch.mm(temp_sample_y[:, z_id], z_embeddings[z_id]).unsqueeze(1))
-            attn_context = torch.cat(attn_context, dim=1)
-            dec_init_state = torch.sum(attn_context, dim=1).unsqueeze(0)
-        else:
-            dec_init_state = self.model.z_embedding(sample_y.view(
-                1, -1, self.model.config.y_size * self.model.config.k_size))
-            attn_context = None
+        dec_init_state = self.model.z_embedding(sample_z.unsqueeze(0))
+        attn_context = None
 
         # decode
         if self.model.config.dec_rnn_cell == 'lstm':
             dec_init_state = tuple([dec_init_state, dec_init_state])
 
-        dec_outputs, dec_hidden_state, ret_dict = self.model.decoder(batch_size=batch_size,
-                                                                     dec_inputs=None,
-                                                                     # (batch_size, response_size-1)
-                                                                     # tuple: (h, c)
-                                                                     dec_init_state=dec_init_state,
-                                                                     attn_context=attn_context,
-                                                                     # (batch_size, max_ctx_len, ctx_cell_size)
-                                                                     mode=mode,
-                                                                     gen_type='greedy',
-                                                                     beam_size=self.model.config.beam_size)  # (batch_size, goal_nhid)
+        # decode
+        logprobs, outs = self.model.decoder.forward_rl(batch_size=batch_size,
+                                                 dec_init_state=dec_init_state,
+                                                 attn_context=attn_context,
+                                                 vocab=self.model.vocab,
+                                                 max_words=max_words,
+                                                 temp=0.1)
+        return logprobs, outs, joint_logpz, sample_z
 
         # ret_dict['sample_z'] = sample_y
         # ret_dict['log_qy'] = log_qy
