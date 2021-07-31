@@ -753,7 +753,7 @@ class LaRL(Policy):
         p_mu, p_logvar = self.model.zero, self.model.zero
         
         sample_z = torch.normal(p_mu, th.sqrt(th.exp(p_logvar))).detach()
-        logprob_sample_z = self.gaussian_logprob(p_mu, self.zero, sample_z)
+        
         joint_logpz = torch.sum(logprob_sample_z, dim=1)
 
 
