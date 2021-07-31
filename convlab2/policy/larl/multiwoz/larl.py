@@ -17,7 +17,7 @@ import os
 import random
 import tempfile
 import zipfile
-
+import torch as th
 import numpy as np
 import re
 import torch
