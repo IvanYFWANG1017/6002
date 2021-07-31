@@ -298,7 +298,7 @@ class LaRL(Policy):
             utt_cell_size=300,
             bi_utt_cell=True,
             enc_use_attn=True,
-            dec_use_attn=True,
+            dec_use_attn=False,
             dec_rnn_cell='lstm',
             dec_cell_size=300,
             dec_attn_mode='cat',
@@ -330,8 +330,8 @@ class LaRL(Policy):
         self.model = SysPerfectBD2Gauss(self.corpus, config)
         self.config = config
         if config.use_gpu:
-            self.model.load_state_dict(
-                '../input/model1/rl_model')
+            self.model.load_state_dict(torch.load(
+                '../input/model1/rl_model'))
             self.model.cuda()
         else:
             self.model.load_state_dict(torch.load(
