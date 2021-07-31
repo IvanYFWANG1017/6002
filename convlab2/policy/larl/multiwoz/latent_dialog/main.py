@@ -218,10 +218,10 @@ class OfflineTaskReinforce(object):
                         break
 
                     n += 1
-                    if n % 50 == 0:
+                    if n % 200 == 0:
                         print("Reinforcement Learning {}/{} eposide".format(n, self.train_data.num_batch*self.rl_config.nepoch))
                         self.learning_exp_file.write(
-                            '{}\t{}\n'.format(n, np.mean(self.agent.all_rewards[-50:])))
+                            '{}\t{}\n'.format(n, np.mean(self.agent.all_rewards[-200:])))
                         self.learning_exp_file.flush()
 
                     # reinforcement learning
