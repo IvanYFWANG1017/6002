@@ -747,9 +747,10 @@ class LaRL(Policy):
 
         mode = GEN
 
-        logits_qy, log_qy = self.model.c2z(enc_last)
-        sample_y = self.model.gauss_connector(logits_qy, hard=mode == GEN)
-        log_py = self.model.log_uniform_y
+        
+        q_mu, q_logvar = self.c2z(enc_last)
+        sample_z = self.gauss_connector(q_mu, q_logvar)
+        p_mu, p_logvar = self.zero, self.zero
 
 
         # pack attention context
