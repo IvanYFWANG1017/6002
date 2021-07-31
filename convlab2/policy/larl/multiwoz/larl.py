@@ -766,7 +766,7 @@ class LaRL(Policy):
                                                  dec_init_state=dec_init_state,
                                                  attn_context=attn_context,
                                                  vocab=self.model.vocab,
-                                                 max_words=max_words,
+                                                 max_words=100,
                                                  temp=0.1)
         return logprobs, outs, joint_logpz, sample_z
 
