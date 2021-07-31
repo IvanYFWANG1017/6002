@@ -751,6 +751,10 @@ class LaRL(Policy):
         q_mu, q_logvar = self.model.c2z(enc_last)
         sample_z = self.model.gauss_connector(q_mu, q_logvar)
         p_mu, p_logvar = self.model.zero, self.model.zero
+        
+        sample_z = th.normal(p_mu, th.sqrt(th.exp(p_logvar))).detach()
+        logprob_sample_z = self.gaussian_logprob(p_mu, self.zero, sample_z)
+        joint_logpz = th.sum(logprob_sample_z, dim=1)
 
 
         # pack attention context
