@@ -331,11 +331,11 @@ class LaRL(Policy):
         self.config = config
         if config.use_gpu:
             self.model.load_state_dict(torch.load(
-                '../input/model1/rl_model'))
+                '../input/model1/rl_model 3'))
             self.model.cuda()
         else:
             self.model.load_state_dict(torch.load(
-                '../input/model1/rl_model'), map_location=lambda storage, loc: storage)
+                '../input/model1/rl_model 3'), map_location=lambda storage, loc: storage)
         self.model.eval()
         self.dic = pickle.load(
             open(os.path.join(temp_path, 'larl_model/svdic.pkl'), 'rb'))
